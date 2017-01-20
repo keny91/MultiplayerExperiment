@@ -30,6 +30,9 @@ public class PlayerController : NetworkBehaviour {
 
 	}
 
+
+
+    // CALLED ON THE CLIENT AND EXECUTED ON THE SERVER
     [Command]
     void CmdFire()
     {
@@ -48,5 +51,7 @@ public class PlayerController : NetworkBehaviour {
         transform.FindChild("Body").GetComponent<Renderer>().material.color = Color.green;
 
     }
+
+
 
 }
