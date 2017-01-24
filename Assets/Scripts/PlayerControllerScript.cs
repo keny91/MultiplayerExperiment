@@ -1,16 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 
-public class PlayerController : NetworkBehaviour {
+public class PlayerControllerScript : NetworkBehaviour
+{
+    [SyncVar]
+    public string pname = "thePlayer";
+    [SyncVar]
+    public Color playerColor = Color.green;
+
 
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
+    
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
 
         if (!isLocalPlayer)
         {
@@ -28,7 +35,7 @@ public class PlayerController : NetworkBehaviour {
             CmdFire();
         }
 
-	}
+    }
 
 
 
@@ -48,7 +55,8 @@ public class PlayerController : NetworkBehaviour {
 
     public override void OnStartLocalPlayer()
     {
-        transform.FindChild("Body").GetComponent<Renderer>().material.color = Color.green;
+        transform.FindChild("Body").GetComponent<Renderer>().material.color = playerColor;
+        
 
     }
 
