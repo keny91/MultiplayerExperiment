@@ -14,6 +14,7 @@ public class UDPReceiver : MonoBehaviour {
     public int remotePort = 19784;
     KoskiNetworkManager netManager;
 
+
     /// <summary>
     /// 
     /// </summary>
@@ -24,6 +25,7 @@ public class UDPReceiver : MonoBehaviour {
         {
             if (receiver == null)
             {
+                netManager = GetComponent<KoskiNetworkManager>();
                 receiver = new UdpClient(remotePort);
                 receiver.BeginReceive(new AsyncCallback(ReceiveData), null);
                 Debug.Log("Started Listening for LAN Messages over port:" + remotePort);

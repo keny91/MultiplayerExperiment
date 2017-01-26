@@ -55,7 +55,7 @@ public class PlayerControllerScript : NetworkBehaviour
 
     public override void OnStartLocalPlayer()
     {
-        transform.FindChild("Body").GetComponent<Renderer>().material.color = playerColor;
+        //transform.FindChild("Body").GetComponent<Renderer>().material.color = playerColor;
         
 
     }

@@ -67,6 +67,8 @@ public class MainMenu : MonoBehaviour {
     {
         Show(MultiplayerMenu);
         Hide(StartMenu);
+        NetManager.PROV = GameObject.Find("IPDISPLAY").GetComponent<Text>();
+
     }
 
     public void OnHostButton()
