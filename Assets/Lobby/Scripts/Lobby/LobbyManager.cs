@@ -23,15 +23,18 @@ namespace Prototype.NetworkLobby
         [Space]
 
 
-        [Header("LAN Koski Connection")]
+   [HideInInspector]
         public UDPMulticast BroadCaster;
+        [HideInInspector]
         public UDPReceiver BroadCastListener;
 
 
         [Space]
         [Header("UI Reference")]
-        public LobbyTopPanel topPanel;
 
+        public RectTransform controlPanel;
+        public LobbyTopPanel topPanel;
+        
         public RectTransform mainMenuPanel;
         public RectTransform lobbyPanel;
 
@@ -50,6 +53,7 @@ namespace Prototype.NetworkLobby
         public Text statusInfo;
         public Text hostInfo;
 
+
         //Client numPlayers from NetworkManager is always 0, so we count (throught connect/destroy in LobbyPlayer) the number
         //of players, so that even client know how many player there is.
         [HideInInspector]
@@ -65,6 +69,11 @@ namespace Prototype.NetworkLobby
 
         protected LobbyHook _lobbyHooks;
 
+
+
+
+
+
         void Start()
         {
             s_Singleton = this;
@@ -73,7 +82,7 @@ namespace Prototype.NetworkLobby
 
             backButton.gameObject.SetActive(false);
             // GetComponent<Canvas>().enabled = true;
-            GetComponent<Canvas>().enabled = false;
+            GetComponent<Canvas>().enabled = true;
 
 
             // Start the BroadcastSettings
@@ -365,8 +374,14 @@ namespace Prototype.NetworkLobby
 					allready &= lobbySlots[i].readyToBegin;
 			}
 
-			if(allready)
-				StartCoroutine(ServerCountdownCoroutine());
+            if (allready)
+            {
+                BroadCaster.StopBroadcast();
+                StartCoroutine(ServerCountdownCoroutine());
+                
+               // BroadCastListener.sto
+            }
+				
         }
 
         public IEnumerator ServerCountdownCoroutine()
@@ -402,7 +417,8 @@ namespace Prototype.NetworkLobby
                     (lobbySlots[i] as LobbyPlayer).RpcUpdateCountdown(0);
                 }
             }
-
+            mainMenuPanel.transform.gameObject.SetActive(false);
+            //ChangeTo(controlPanel);
             ServerChangeScene(playScene);
         }
 

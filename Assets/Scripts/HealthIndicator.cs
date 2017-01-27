@@ -12,6 +12,8 @@ public class HealthIndicator : NetworkBehaviour {
 
     public RectTransform healthbar;
 
+
+
     public void TakeDamage(int amount)
     {
         if (!isServer)
@@ -41,13 +43,13 @@ public class HealthIndicator : NetworkBehaviour {
 
     // CALLED ON THE SERVER AND EXECUTED ON THE CLIENTS
     // THIS  IS A CALL FROM THE SERVER TO CLIENTS (ONLY THE LOCALPLAYER ACTS)
-    [ClientRpc]
-    void RpcRespawn()
+    [ClientRpc] void RpcRespawn()
     {
         if (isLocalPlayer)
         {
+            Debug.LogWarning(transform.name + "Respawned from position: " + transform.position);
             transform.position = new Vector3(0, 0, 0);
-            
+            transform.Translate(1, 0, 0);
         }
             
     }

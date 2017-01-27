@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour {
     public string buildVersion = "1.0";
     private Text BuildText;
     public CanvasGroup StartMenu, MultiplayerMenu;
-
+    public Text HostText;
     public KoskiNetworkManager NetManager;
     public string AvailableHOST = "";
     public bool Hosting = false;
@@ -73,6 +73,8 @@ public class MainMenu : MonoBehaviour {
 
     public void OnHostButton()
     {
+        Hide(MultiplayerMenu);
+        Hide(StartMenu);
         NetManager.StartLocalServer();
         
         

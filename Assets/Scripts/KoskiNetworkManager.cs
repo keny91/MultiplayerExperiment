@@ -36,7 +36,8 @@ public class KoskiNetworkManager : NetworkManager {
             Debug.LogError(Network.player.ipAddress);
             BroadCaster.StartBroadcast();
             //   SceneManager.LoadScene("main");
-            ServerChangeScene("main");
+            //ServerChangeScene("main");
+            
             StartHost();
         }
 
@@ -50,7 +51,7 @@ public class KoskiNetworkManager : NetworkManager {
         {
             
             Debug.LogWarning("I want to connect to:" + networkAddress);
-            SceneManager.LoadScene("main");
+            //SceneManager.LoadScene("main");
             StartClient();
         }
         else

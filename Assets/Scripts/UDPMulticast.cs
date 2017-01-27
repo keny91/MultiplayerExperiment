@@ -5,13 +5,13 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using UnityEngine.Networking;
+using Prototype.NetworkLobby;
 
 public class UDPMulticast : MonoBehaviour {
 
     UdpClient sender;
-    public int localPort = 7777;
+    public int localPort = 7755;
     int remotePort = 19784;
-    string IP;
     string customMessage;
    // NetworkManager NetworkM;
 
@@ -28,6 +28,10 @@ public class UDPMulticast : MonoBehaviour {
     /// </summary>
     public void StartBroadcast()
     {
+        //customMessage = Network.player.ipAddress;
+        //sender = new UdpClient(localPort, AddressFamily.InterNetwork);
+        sender = new UdpClient(localPort, AddressFamily.InterNetwork);
+        sender.Close();
         try
         {
             customMessage = Network.player.ipAddress;
@@ -36,7 +40,9 @@ public class UDPMulticast : MonoBehaviour {
             sender.Connect(groupEP);
 
             //SendData ();
+            //Invoke("StopBroadcast", 0.1f);
             InvokeRepeating("SendData", 0, 2f);
+
         }
         catch(SocketException e)
         {
@@ -50,6 +56,7 @@ public class UDPMulticast : MonoBehaviour {
     /// </summary>
     public void StopBroadcast()
     {
+        sender.Close();
         CancelInvoke();
     }
 
