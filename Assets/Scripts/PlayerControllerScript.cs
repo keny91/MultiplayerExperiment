@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerControllerScript : NetworkBehaviour
 {
@@ -24,16 +25,28 @@ public class PlayerControllerScript : NetworkBehaviour
             return;
         }
 
-        float x = Input.GetAxis("Horizontal") * Time.deltaTime * 150.0f;
-        float z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
+
+        float x = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime * 150.0f; ;
+        float z;
+        if (CrossPlatformInputManager.GetButton("Forward"))
+        {
+            z =  Time.deltaTime * 3.0f;
+
+        }
+            
+        else
+            z = 0;
+
+        if (CrossPlatformInputManager.GetButtonDown("Fire") || Input.GetKeyDown(KeyCode.Space))
+        {
+            CmdFire();
+
+        }
+
 
         transform.Rotate(0, x, 0);
         transform.Translate(0, 0, z);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CmdFire();
-        }
 
     }
 
@@ -53,10 +66,19 @@ public class PlayerControllerScript : NetworkBehaviour
 
     }
 
+
+
     public override void OnStartLocalPlayer()
     {
         //transform.FindChild("Body").GetComponent<Renderer>().material.color = playerColor;
-        
+        Renderer[] rend = GetComponentsInChildren<Renderer>();
+        foreach (Renderer R in rend)
+        {
+            R.material.color = playerColor;
+        }
+        this.transform.position = new Vector3(Random.Range(-5,5),0,Random.Range(-5, 5));
+
+
 
     }
 

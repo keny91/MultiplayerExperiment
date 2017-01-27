@@ -37,7 +37,7 @@ namespace Prototype.NetworkLobby
         public void OnClickHost()
         {
             if (lobbyManager.BroadCaster){
-                Debug.LogWarning("BroadCaster FOUND");
+                //Debug.LogWarning("BroadCaster FOUND");
                 lobbyManager.BroadCaster.StartBroadcast();
             }
                 

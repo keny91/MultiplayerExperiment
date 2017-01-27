@@ -28,6 +28,10 @@ public class UDPMulticast : MonoBehaviour {
     /// </summary>
     public void StartBroadcast()
     {
+        //customMessage = Network.player.ipAddress;
+        //sender = new UdpClient(localPort, AddressFamily.InterNetwork);
+        sender = new UdpClient(localPort, AddressFamily.InterNetwork);
+        sender.Close();
         try
         {
             customMessage = Network.player.ipAddress;

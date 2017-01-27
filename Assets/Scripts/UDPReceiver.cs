@@ -47,6 +47,7 @@ public class UDPReceiver : MonoBehaviour {
         MyIP = Network.player.ipAddress;
         theReceivedIP = null;
         StartReceivingIP();
+
     }
 
 
@@ -81,5 +82,12 @@ public class UDPReceiver : MonoBehaviour {
             theReceivedIP = receivedString;
             //netManager.changeNetworkAddress(receivedString);
         }
+    }
+
+    public void StopReceiving()
+    {
+        receiver = new UdpClient(remotePort);
+        receiver.Close();
+        //  receiver.
     }
 }

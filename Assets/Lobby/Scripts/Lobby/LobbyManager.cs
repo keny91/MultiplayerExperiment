@@ -23,15 +23,18 @@ namespace Prototype.NetworkLobby
         [Space]
 
 
-        [Header("LAN Koski Connection")]
+   [HideInInspector]
         public UDPMulticast BroadCaster;
+        [HideInInspector]
         public UDPReceiver BroadCastListener;
 
 
         [Space]
         [Header("UI Reference")]
-        public LobbyTopPanel topPanel;
 
+        public RectTransform controlPanel;
+        public LobbyTopPanel topPanel;
+        
         public RectTransform mainMenuPanel;
         public RectTransform lobbyPanel;
 
@@ -371,8 +374,14 @@ namespace Prototype.NetworkLobby
 					allready &= lobbySlots[i].readyToBegin;
 			}
 
-			if(allready)
-				StartCoroutine(ServerCountdownCoroutine());
+            if (allready)
+            {
+                BroadCaster.StopBroadcast();
+                StartCoroutine(ServerCountdownCoroutine());
+                
+               // BroadCastListener.sto
+            }
+				
         }
 
         public IEnumerator ServerCountdownCoroutine()
@@ -409,6 +418,7 @@ namespace Prototype.NetworkLobby
                 }
             }
             mainMenuPanel.transform.gameObject.SetActive(false);
+            //ChangeTo(controlPanel);
             ServerChangeScene(playScene);
         }
 
