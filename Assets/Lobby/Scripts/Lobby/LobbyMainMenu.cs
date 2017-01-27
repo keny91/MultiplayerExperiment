@@ -15,10 +15,10 @@ namespace Prototype.NetworkLobby
 
         public InputField ipInput;
         public InputField matchNameInput;
+        public InputField NameInput;
 
 
 
-      
 
         public void OnEnable()
         {
@@ -29,18 +29,30 @@ namespace Prototype.NetworkLobby
 
             matchNameInput.onEndEdit.RemoveAllListeners();
             matchNameInput.onEndEdit.AddListener(onEndEditGameName);
+
+            NameInput.onEndEdit.RemoveAllListeners();
+            NameInput.onEndEdit.AddListener(onEndEditGameName);
         }
 
         public void OnClickHost()
         {
+            if (lobbyManager.BroadCaster){
+                Debug.LogWarning("BroadCaster FOUND");
+                lobbyManager.BroadCaster.StartBroadcast();
+            }
+                
+            else
+                Debug.LogWarning("RECEIVER NOT FOUND");
             lobbyManager.StartHost();
         }
+
+
 
         public void OnClickJoin()
         {
             lobbyManager.ChangeTo(lobbyPanel);
 
-            lobbyManager.networkAddress = ipInput.text;
+            //lobbyManager.networkAddress = ipInput.text;
             lobbyManager.StartClient();
 
             lobbyManager.backDelegate = lobbyManager.StopClientClbk;

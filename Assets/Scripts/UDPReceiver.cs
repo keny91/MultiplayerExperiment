@@ -6,13 +6,17 @@ using System.Net.Sockets;
 using System.Net;
 using System;
 using System.Text;
+using Prototype.NetworkLobby;
 
 public class UDPReceiver : MonoBehaviour {
 
-    string MyIP;
+    public string theReceivedIP;
+    private string MyIP;
     UdpClient receiver;
     public int remotePort = 19784;
-    KoskiNetworkManager netManager;
+    LobbyManager netManager;
+   
+    public bool LanServerFound = false;
 
 
     /// <summary>
@@ -25,21 +29,23 @@ public class UDPReceiver : MonoBehaviour {
         {
             if (receiver == null)
             {
-                netManager = GetComponent<KoskiNetworkManager>();
+                netManager = GetComponent<LobbyManager>();
                 receiver = new UdpClient(remotePort);
                 receiver.BeginReceive(new AsyncCallback(ReceiveData), null);
                 Debug.Log("Started Listening for LAN Messages over port:" + remotePort);
             }
+
         }
         catch (SocketException e)
         {
-            Debug.Log(e.Message);
+            Debug.Log(e.Message + "Port" + remotePort);
         }
     }
 
     void Start()
     {
         MyIP = Network.player.ipAddress;
+        theReceivedIP = null;
         StartReceivingIP();
     }
 
@@ -70,8 +76,10 @@ public class UDPReceiver : MonoBehaviour {
             Debug.Log("Received MY OWN message");
         else 
         {
-            Debug.Log("Received message:" + receivedString);
-            netManager.changeNetworkAddress(receivedString);
+            Debug.Log("Received message:" + receivedString + "My ID is: "+ MyIP);
+            LanServerFound = true;
+            theReceivedIP = receivedString;
+            //netManager.changeNetworkAddress(receivedString);
         }
     }
 }

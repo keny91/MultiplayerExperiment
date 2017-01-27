@@ -47,7 +47,7 @@ public class HealthIndicator : NetworkBehaviour {
         if (isLocalPlayer)
         {
             transform.position = new Vector3(0, 0, 0);
-            
+            transform.Translate(1, 0, 0);
         }
             
     }
