@@ -13,6 +13,10 @@ public class HealthIndicator : NetworkBehaviour {
     public RectTransform healthbar;
 
 
+    public Color m_FullHealthColor = Color.green;
+    public Color m_ZeroHealthColor = Color.red;
+    public GameObject m_ExplosionPrefab;
+
 
     public void TakeDamage(int amount)
     {
