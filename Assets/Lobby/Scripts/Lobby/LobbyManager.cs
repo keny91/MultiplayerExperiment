@@ -218,6 +218,7 @@ namespace Prototype.NetworkLobby
             }
             else
             {
+                BroadCaster.StopBroadcast();
                 StopHost();
             }
 
@@ -234,6 +235,7 @@ namespace Prototype.NetworkLobby
                 StopMatchMaker();
             }
 
+            
             ChangeTo(mainMenuPanel);
         }
 
