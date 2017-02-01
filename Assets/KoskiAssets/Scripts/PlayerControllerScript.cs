@@ -10,7 +10,7 @@ public class PlayerControllerScript : NetworkBehaviour
     public string pname = "thePlayer";
     [SyncVar]
     public Color playerColor = Color.green;
-
+    public Vector3 Rescaling = new Vector3(3, 3, 3);
 
 
     [Header("Player Attributes")]
@@ -36,16 +36,22 @@ public class PlayerControllerScript : NetworkBehaviour
         }
 
 
-        float x = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime * rotateSpeed;
+        /* float x = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime * rotateSpeed;
         float z;
         if (CrossPlatformInputManager.GetButton("Forward"))
         {
-            z =  Time.deltaTime * movingSpeed;
+            z = Time.deltaTime * movingSpeed;
 
         }
-            
-        else
+                else
             z = 0;
+        */
+
+        float x = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime * movingSpeed;
+        float z = CrossPlatformInputManager.GetAxis("Vertical") * Time.deltaTime * movingSpeed;
+
+            
+
 
         /*if (CrossPlatformInputManager.GetButtonDown("Fire") || Input.GetKeyDown(KeyCode.Space))
         {
@@ -54,8 +60,8 @@ public class PlayerControllerScript : NetworkBehaviour
         }
         */
 
-        transform.Rotate(0, x, 0);
-        transform.Translate(0, 0, z);
+       // transform.Rotate(0, x, 0);
+        transform.Translate(x, 0, z);
 
 
     }
@@ -91,6 +97,9 @@ public class PlayerControllerScript : NetworkBehaviour
         //transform.FindChild("Body").GetComponent<Renderer>().material.color = playerColor;
         
         Renderer[] rend = GetComponentsInChildren<Renderer>();
+        transform.parent = GameObject.Find("Scene").GetComponent<Transform>();
+        transform.localScale = Rescaling;
+
         foreach (Renderer R in rend)
         {
             R.material.color = playerColor;
@@ -110,7 +119,15 @@ public class PlayerControllerScript : NetworkBehaviour
     {
 
         GameObject TheHitObject = collision.gameObject;
-        int identifierTag = theTagReference.tagList[TheHitObject.tag];
+        int identifierTag;
+        try
+        {
+            identifierTag = theTagReference.tagList[TheHitObject.tag];
+        }
+        catch
+        {
+            identifierTag = 0;
+        }
 
         // Colliding with a damaging element will cause an inverse Forse push to in the X, Z axis.
 

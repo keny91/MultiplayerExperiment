@@ -35,7 +35,7 @@ namespace UnityStandardAssets.CrossPlatformInput
             m_StartPos = transform.position;
         }
 
-		protected void UpdateVirtualAxes(Vector3 value)
+		public virtual void UpdateVirtualAxes(Vector3 value)
 		{
 			var delta = m_StartPos - value;
 			delta.y = -delta.y;
@@ -68,14 +68,15 @@ namespace UnityStandardAssets.CrossPlatformInput
 				m_VerticalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(verticalAxisName);
 				CrossPlatformInputManager.RegisterVirtualAxis(m_VerticalVirtualAxis);
 			}
+            
 		}
 
 
-		public void OnDrag(PointerEventData data)
+		public virtual void OnDrag(PointerEventData data)
 		{
 			Vector3 newPos = Vector3.zero;
-
-			if (m_UseX)
+            Debug.LogWarning("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+            if (m_UseX)
 			{
 				int delta = (int)(data.position.x - m_StartPos.x);
 				delta = Mathf.Clamp(delta, - MovementRange, MovementRange);
@@ -89,6 +90,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 				newPos.y = delta;
 			}
 			transform.position = new Vector3(m_StartPos.x + newPos.x, m_StartPos.y + newPos.y, m_StartPos.z + newPos.z);
+           
 			UpdateVirtualAxes(transform.position);
 		}
 

@@ -21,7 +21,7 @@ namespace Complete
         private float m_CurrentLaunchForce;         // The force that will be given to the shell when the fire button is released.
         private float m_ChargeSpeed;                // How fast the launch force increases, based on the max charge time.
         private bool m_Fired;                       // Whether or not the shell has been launched with this button press.
-
+        private PlayerControllerScript thePlayer;
 
         private void OnEnable()
         {
@@ -36,7 +36,7 @@ namespace Complete
             // The fire axis is based on the player number.
             //m_FireButton = "Fire" + m_PlayerNumber;
             m_FireButton = "Fire";
-
+            thePlayer = GetComponent<PlayerControllerScript>();
             // The rate that the launch force charges up is the range of possible forces by the max charge time.
             m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
         }
@@ -90,7 +90,7 @@ namespace Complete
             // Create an instance of the shell and store a reference to it's rigidbody.
             Rigidbody shellInstance =
                 Instantiate (m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
-
+            shellInstance.transform.localScale = thePlayer.Rescaling;
             // Set the shell's velocity to the launch force in the fire position's forward direction.
             shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward; 
 
