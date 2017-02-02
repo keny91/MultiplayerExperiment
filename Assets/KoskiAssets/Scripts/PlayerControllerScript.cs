@@ -17,6 +17,8 @@ public class PlayerControllerScript : NetworkBehaviour
     public float movingSpeed = 3f;
     public float rotateSpeed = 150.0f;
 
+    MovementController theMoveController;
+
 
     bool isInvulnerable = false;
 
@@ -50,7 +52,9 @@ public class PlayerControllerScript : NetworkBehaviour
         float x = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime * movingSpeed;
         float z = CrossPlatformInputManager.GetAxis("Vertical") * Time.deltaTime * movingSpeed;
 
-            
+        Vector3 JoystickMovement = new Vector3(x,0,z);
+
+        theMoveController.Move(JoystickMovement);
 
 
         /*if (CrossPlatformInputManager.GetButtonDown("Fire") || Input.GetKeyDown(KeyCode.Space))
@@ -60,8 +64,8 @@ public class PlayerControllerScript : NetworkBehaviour
         }
         */
 
-       // transform.Rotate(0, x, 0);
-        transform.Translate(x, 0, z);
+        // transform.Rotate(0, x, 0);
+        //transform.Translate(JoystickMovement);
 
 
     }
@@ -88,7 +92,7 @@ public class PlayerControllerScript : NetworkBehaviour
     void Start()
     {
         theHealth = (HealthIndicator)GetComponent<HealthIndicator>();
-
+        theMoveController = GetComponent<MovementController>();
     }
 
 

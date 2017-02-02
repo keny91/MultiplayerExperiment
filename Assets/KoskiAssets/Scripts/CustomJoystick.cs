@@ -46,7 +46,7 @@ public class CustomJoystick : Joystick {
 
         float R = Mathf.Sqrt(Mathf.Pow(valX, 2) + Mathf.Pow(valY, 2));
         Mathf.Acos(valX / R);
-        Debug.LogWarning("value X = " + valX + "__  value Y = " + valY);
+        //Debug.LogWarning("value X = " + valX + "__  value Y = " + valY);
 
         float angle1 = Mathf.Acos(valX / R);
         float angle2 = Mathf.Asin(valY / R);
@@ -170,7 +170,9 @@ public class CustomJoystick : Joystick {
         delta.y = -delta.y;
         delta /= MovementRange;
 
-        delta  = CalculateJoyStickAngle(delta);
+        // Only do the correction in if it has been activated and is p
+        if(ARcorrection)
+            delta  = CalculateJoyStickAngle(delta);
         //Debug.Log("updating axis");
 
         
@@ -214,7 +216,16 @@ public class CustomJoystick : Joystick {
 
     new void Start()
     {
-        CameraPosition = GameObject.Find("ARCamera").GetComponent<Transform>();
+        try
+        {
+            CameraPosition = GameObject.Find("ARCamera").GetComponent<Transform>();
+        }
+        catch(UnityException e)
+        {
+            Debug.LogWarning("No ARCamera Detected");
+            ARcorrection = false;
+        }
+        
         m_StartPos = transform.position;
     }
 
