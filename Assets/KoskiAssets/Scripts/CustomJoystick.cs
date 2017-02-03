@@ -9,11 +9,21 @@ public class CustomJoystick : Joystick {
     public bool ARcorrection = true;
     public Transform CameraPosition;
 
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     new void OnEnable()
     {
         CreateVirtualAxes();
     }
 
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     private new void CreateVirtualAxes()
     {
         // set axes to use
@@ -34,8 +44,20 @@ public class CustomJoystick : Joystick {
 
     }
 
+    /// <summary>
+    /// A way to unregister the axis from external classes
+    /// </summary>
+    public void Disable()
+    {
+        OnDisable();
+    }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     private Vector3 CalculateJoyStickAngle(Vector3 value)
     {
         float valX = value.x;
@@ -225,8 +247,15 @@ public class CustomJoystick : Joystick {
             Debug.LogWarning("No ARCamera Detected");
             ARcorrection = false;
         }
-        
+
+        int wid = Screen.width;
+        int hei = Screen.height;
+
+        MovementRange = wid / 11;  // change  to reajust
+
         m_StartPos = transform.position;
+        CreateVirtualAxes();
+
     }
 
 }

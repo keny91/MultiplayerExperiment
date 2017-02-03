@@ -31,7 +31,7 @@ public class PlayerShooting : NetworkBehaviour {
     {
         // When the tank is turned on, reset the launch force and the UI
         m_CurrentLaunchForce = m_MinLaunchForce;
-        m_AimSlider.value = m_MinLaunchForce;
+        //m_AimSlider.value = m_MinLaunchForce;
     }
 
 
@@ -55,7 +55,8 @@ public class PlayerShooting : NetworkBehaviour {
         }
 
         // The slider should have a default value of the minimum launch force.
-        m_AimSlider.value = m_MinLaunchForce;
+        
+        //m_AimSlider.value = m_MinLaunchForce;
         
         // If the max force has been exceeded and the shell hasn't yet been launched...
         if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
@@ -70,7 +71,9 @@ public class PlayerShooting : NetworkBehaviour {
         // Otherwise, if the fire button has just started being pressed...
         else if (CrossPlatformInputManager.GetButtonDown(m_FireButton))
         {
-           // Debug.Log("SHOOT: PHASE 2.");
+            m_AimSlider.gameObject.SetActive(true);
+            m_AimSlider.value = m_MinLaunchForce;
+            // Debug.Log("SHOOT: PHASE 2.");
             // ... reset the fired flag and reset the launch force.
             m_Fired = false;
             m_CurrentLaunchForce = m_MinLaunchForce;
@@ -104,9 +107,9 @@ public class PlayerShooting : NetworkBehaviour {
     void CmdFire(float force)
     //private void Fire()
     {
-
+        m_AimSlider.gameObject.SetActive(false);
         // Set the fired flag so only Fire is only called once.
-        
+
         //Debug.Log("SHOOT: SHOOTING");
         // Create an instance of the shell and store a reference to it's rigidbody.
         GameObject shellInstance = Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);

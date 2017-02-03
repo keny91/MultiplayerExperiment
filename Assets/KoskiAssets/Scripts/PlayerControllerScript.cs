@@ -105,7 +105,7 @@ public class PlayerControllerScript : NetworkBehaviour
         
         Renderer[] rend = GetComponentsInChildren<Renderer>();
         transform.parent = GameObject.Find("Scene").GetComponent<Transform>();
-        transform.localScale = Rescaling;
+        //transform.localScale = Rescaling;
 
         foreach (Renderer R in rend)
         {
