@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class MovementController : MonoBehaviour {
 
 
-    float MovementSpeed = 2f;
-    float RotationSpeed = 100f;
+    public float MovementSpeed = 2f;
+    public float RotationSpeed = 100f;
 
     public float MaxSpeed = 100f;
     public float MaxRotationSpeed = 50f;
 
-    Vector3 Movement;
-    Vector3 CurrentVelocity;
-    Vector3 Trayectory;
-    Vector3 Position;
-    Vector3 OPosition;
+    protected Vector3 Movement;
+    protected  Vector3 CurrentVelocity;
+    protected Vector3 Trayectory;
+    protected Vector3 Position;
+    protected Vector3 OPosition;
     public GameObject PhysicalPlayer;
     protected Rigidbody thePhysics;
 
@@ -31,7 +32,7 @@ public class MovementController : MonoBehaviour {
         return targetVelocity;
     }
 
-    public void Move(Vector3 JoyStickTranslation)
+    public virtual void Move(Vector3 JoyStickTranslation)
     {
 
         if (JoyStickTranslation.x != 0 && JoyStickTranslation.z != 0)
@@ -71,8 +72,8 @@ public class MovementController : MonoBehaviour {
         Quaternion rot = Quaternion.LookRotation(Trayectory);
         Debug.LogWarning("Original Rot: " + rot + "Target Rot:" + PhysicalPlayer.transform.rotation);
         // slerp to the desired rotation over time
-        //transform.rotation = Quaternion.Slerp(transform.rotation, rot, RotationSpeed * Time.deltaTime);
-        PhysicalPlayer.transform.rotation = rot;
+        PhysicalPlayer.transform.rotation = Quaternion.Slerp(transform.rotation, rot, RotationSpeed * Time.deltaTime);
+        //PhysicalPlayer.transform.rotation = rot;
         Quaternion n = PhysicalPlayer.transform.rotation;
         float differenceRotation = Quaternion.Angle(rot ,n);
         
@@ -85,11 +86,19 @@ public class MovementController : MonoBehaviour {
         Movement = new Vector3();
         CurrentVelocity = new Vector3();
         thePhysics = this.GetComponent<Rigidbody>();
-        PhysicalPlayer = this.transform.FindChild("MeshContainer").gameObject;
+        try
+        {
+            PhysicalPlayer = this.transform.FindChild("MeshContainer").gameObject;
+        }
+        catch(MissingReferenceException e)
+        {
+            Debug.LogWarning("No child \"MeshContainer\" found in PlayerObject. ");
+        }
+        
     }
 	
 	// Update is called once per frame
-	void Update () {
+	public virtual void Update () {
         OPosition = this.transform.position;
         CurrentVelocity = thePhysics.velocity;
 	}

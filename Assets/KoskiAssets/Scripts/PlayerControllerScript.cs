@@ -17,8 +17,10 @@ public class PlayerControllerScript : NetworkBehaviour
     public float movingSpeed = 3f;
     public float rotateSpeed = 150.0f;
 
-    MovementController theMoveController;
 
+
+    //MovementController theMoveController;
+    MovementControllerNonVelocity theMoveController;
 
     bool isInvulnerable = false;
 
@@ -92,7 +94,8 @@ public class PlayerControllerScript : NetworkBehaviour
     void Start()
     {
         theHealth = (HealthIndicator)GetComponent<HealthIndicator>();
-        theMoveController = GetComponent<MovementController>();
+        //theMoveController = GetComponent<MovementController>();
+        theMoveController = GetComponent<MovementControllerNonVelocity>();
     }
 
 
