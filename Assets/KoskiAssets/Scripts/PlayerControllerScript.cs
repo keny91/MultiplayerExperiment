@@ -30,6 +30,23 @@ public class PlayerControllerScript : NetworkBehaviour
     public Transform bulletSpawn;
     public TagDatabase theTagReference;
 
+
+    public void OnGUI()
+    {
+
+        /*
+        if (isLocalPlayer)
+        {
+            pname = GUI.TextField(new Rect(25, Screen.width - 40, 100, 30), pname);
+
+            // CHANGE CONDITION
+        }
+        */
+    }
+
+
+
+
     // Update is called once per frame
     void Update()
     {
@@ -96,6 +113,14 @@ public class PlayerControllerScript : NetworkBehaviour
         theHealth = (HealthIndicator)GetComponent<HealthIndicator>();
         //theMoveController = GetComponent<MovementController>();
         theMoveController = GetComponent<MovementControllerNonVelocity>();
+
+        Renderer[] rend = GetComponentsInChildren<Renderer>();
+        foreach (Renderer R in rend)
+        {
+            R.material.color = playerColor;
+        }
+
+        transform.parent = GameObject.Find("Players").GetComponent<Transform>();
     }
 
 
@@ -103,14 +128,11 @@ public class PlayerControllerScript : NetworkBehaviour
     {
         //transform.FindChild("Body").GetComponent<Renderer>().material.color = playerColor;
         
-        Renderer[] rend = GetComponentsInChildren<Renderer>();
-        transform.parent = GameObject.Find("Scene").GetComponent<Transform>();
+
+        //transform.parent = GameObject.Find("Players").GetComponent<Transform>();
         //transform.localScale = Rescaling;
 
-        foreach (Renderer R in rend)
-        {
-            R.material.color = playerColor;
-        }
+
         this.transform.position = new Vector3(Random.Range(-5,5),0,Random.Range(-5, 5));
 
 

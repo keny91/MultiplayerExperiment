@@ -63,8 +63,8 @@ public class CustomJoystick : Joystick {
         float valX = value.x;
         valX = -valX;
         float valY = value.y;
-        float newValX, newValY, newValR;
-        float angleJoystick, newAngleJoystick;
+        float newValX, newValY;
+        
 
         float R = Mathf.Sqrt(Mathf.Pow(valX, 2) + Mathf.Pow(valY, 2));
         Mathf.Acos(valX / R);
@@ -254,7 +254,7 @@ public class CustomJoystick : Joystick {
         MovementRange = wid / 11;  // change  to reajust
 
         m_StartPos = transform.position;
-        CreateVirtualAxes();
+        //CreateVirtualAxes();
 
     }
 

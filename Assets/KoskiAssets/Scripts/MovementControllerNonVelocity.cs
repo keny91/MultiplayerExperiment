@@ -13,13 +13,13 @@ public class MovementControllerNonVelocity : MovementController {
         if (JoyStickTranslation.x != 0 && JoyStickTranslation.z != 0)
         {
             EstimateFuturePosition(JoyStickTranslation);
-            Debug.LogWarning("The Current POSITION: " + OPosition + " ___ The estimated Position: " + Position);
+            //Debug.LogWarning("The Current POSITION: " + OPosition + " ___ The estimated Position: " + Position);
 
             EstimateTrayectory();
             //CurrentVelocity = DetermineVelocity();
 
 
-            Debug.LogWarning("The Current Trayectory: " + Trayectory + " ___ The velocity: " + CurrentVelocity);
+            //Debug.LogWarning("The Current Trayectory: " + Trayectory + " ___ The velocity: " + CurrentVelocity);
             TranslateDistance();
             OrientObject();
             
@@ -47,7 +47,7 @@ public class MovementControllerNonVelocity : MovementController {
 
         Trayectory.y = 0; // keep the direction strictly horizontal
         Quaternion rot = Quaternion.LookRotation(Trayectory);
-        Debug.LogWarning("Original Rot: " + rot + "Target Rot:" + PhysicalPlayer.transform.rotation);
+        //Debug.LogWarning("Original Rot: " + rot + "Target Rot:" + PhysicalPlayer.transform.rotation);
         // slerp to the desired rotation over time
         PhysicalPlayer.transform.rotation = Quaternion.Slerp(transform.rotation, rot, RotationSpeed * Time.deltaTime);
         //PhysicalPlayer.transform.rotation = rot;

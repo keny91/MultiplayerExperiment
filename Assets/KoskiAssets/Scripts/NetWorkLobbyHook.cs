@@ -13,7 +13,7 @@ public class NetWorkLobbyHook : LobbyHook
         LobbyPlayer lobby = lobbyPlayer.GetComponent<LobbyPlayer>();
         PlayerControllerScript localPlayer = gamePlayer.GetComponent<PlayerControllerScript>();
 
-        localPlayer.pname = lobby.name;
+        localPlayer.pname = lobby.playerName;
         localPlayer.playerColor = lobby.playerColor;
     }
 
