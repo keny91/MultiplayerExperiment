@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="frame_worms-15" size="278.000000 278.000000" />
+    <ImageTarget name="board_black_whole01-09" size="278.000000 278.000000" />
+    <ImageTarget name="delfin_koski-10" size="278.000000 278.000000" />
+    <ImageTarget name="board_black_bigger-10" size="278.000000 278.000000" />
+  </Tracking>
+</QCARConfig>

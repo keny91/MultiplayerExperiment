@@ -1,0 +1,77 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+
+
+public class TrackedTouch
+{
+    public Vector2 startPos;
+    public Vector2 currentPos;
+}
+
+public class JoyStickAnywhere : MonoBehaviour, IPointerClickHandler
+{
+
+    public Canvas theCanvas;
+    public GameObject theJoystickPrefab;
+    public CustomJoystick theJoyStickController;
+
+
+    public void OnPointerClick(PointerEventData ED)
+    {
+        Vector3 localHit = transform.InverseTransformPoint(ED.pressPosition);
+        Debug.LogError(localHit);
+
+        /*
+        int x = ((int)((localHit.x + 62.5f) / 25f));
+
+        int y = 4 - (int)((localHit.y + 58.5f) / 23.4);
+
+        if (x < 0 || x > 4 || y < 0 || y > 4)
+        {
+            //out of bound
+            return;
+        }
+        
+         */
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="touchPosition"></param>
+    public void CreateJoystickAt(Vector3 touchPosition)
+    {
+
+        Vector3 rot = new Vector3(0, 0, 0);
+
+        //Instanciate Prefab
+        //GameObject bullet = (GameObject)Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+        GameObject theObject = (GameObject)Instantiate(theJoystickPrefab, touchPosition, new Quaternion());
+
+        //Get Joystick Custom Controller
+        theJoyStickController = theObject.GetComponent<CustomJoystick>();  // It should start by its own
+    }
+
+   
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+   public Vector3 GetTouchPosition()
+    {
+        return new Vector3();
+    }
+
+
+    public void DestroyJoystick() {
+
+        theJoyStickController.Disable();  // Unregister axis inputs
+        Destroy(theJoyStickController.transform); // Destroy the object
+    }
+
+}
