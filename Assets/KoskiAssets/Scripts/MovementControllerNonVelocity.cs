@@ -5,7 +5,11 @@ using UnityEngine;
 public class MovementControllerNonVelocity : MovementController {
 
 
-
+    /// <summary>
+    /// Get the position of the JoyStick and estimate the object displacement/Velocity.
+    /// This child class focuses on direct traslation of the object instead of adding a certain velocity to the rigidoby.
+    /// </summary>
+    /// <param name="JoyStickTranslation">The movement of the JoyStick</param>
     public override void Move(Vector3 JoyStickTranslation)
     {
 
@@ -17,7 +21,7 @@ public class MovementControllerNonVelocity : MovementController {
 
             EstimateTrayectory();
             //CurrentVelocity = DetermineVelocity();
-
+            getTranslationMagnitude(JoyStickTranslation);
 
             //Debug.LogWarning("The Current Trayectory: " + Trayectory + " ___ The velocity: " + CurrentVelocity);
             TranslateDistance();
@@ -35,13 +39,21 @@ public class MovementControllerNonVelocity : MovementController {
 
     }
 
-    private void TranslateDistance()
+
+    /// <summary>
+    /// The object will be translated a certain amount depending on the MovementSpeed and the trayectory.
+    /// </summary>
+    protected void TranslateDistance()
     {
-        transform.Translate(Trayectory.normalized * MovementSpeed * Time.deltaTime);
+        transform.Translate(Trayectory.normalized * MovementSpeed * Time.deltaTime* InpulseModificator);
     }
 
 
-    public override void OrientObject()
+
+    /// <summary>
+    /// This child class method will rotate slightly the object towards the target direction.
+    /// </summary>
+    protected override void OrientObject()
     {
         PhysicalPlayer.transform.LookAt(OPosition, transform.up);
 

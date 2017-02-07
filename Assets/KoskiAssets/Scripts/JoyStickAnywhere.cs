@@ -16,7 +16,7 @@ public class JoyStickAnywhere : MonoBehaviour, IPointerClickHandler
 
     public Canvas theCanvas;
     public GameObject theJoystickPrefab;
-    public CustomJoystick theJoyStickController;
+    public SmartARJoystick theJoyStickController;
 
 
     public void OnPointerClick(PointerEventData ED)
@@ -53,7 +53,15 @@ public class JoyStickAnywhere : MonoBehaviour, IPointerClickHandler
         GameObject theObject = (GameObject)Instantiate(theJoystickPrefab, touchPosition, new Quaternion());
 
         //Get Joystick Custom Controller
-        theJoyStickController = theObject.GetComponent<CustomJoystick>();  // It should start by its own
+        try
+        {
+            theJoyStickController = theObject.GetComponent<SmartARJoystick>();
+        }
+         catch (MissingReferenceException e)
+        {
+            Debug.LogError("No SmartARJoystick attached to JoyStick");
+            Application.Quit();
+        }
     }
 
    
