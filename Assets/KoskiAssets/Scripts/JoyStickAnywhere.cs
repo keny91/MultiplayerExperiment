@@ -40,13 +40,13 @@ public class JoyStickAnywhere : MonoBehaviour, IPointerClickHandler
 
 
     /// <summary>
-    /// 
+    /// Create the joystick prefab in the position
     /// </summary>
     /// <param name="touchPosition"></param>
     public void CreateJoystickAt(Vector3 touchPosition)
     {
 
-        Vector3 rot = new Vector3(0, 0, 0);
+        //Vector3 rot = new Vector3(0, 0, 0);
 
         //Instanciate Prefab
         //GameObject bullet = (GameObject)Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
@@ -76,6 +76,11 @@ public class JoyStickAnywhere : MonoBehaviour, IPointerClickHandler
     }
 
 
+
+
+    /// <summary>
+    /// Eliminate the previous instance of the JoyStick Controller.
+    /// </summary>
     public void DestroyJoystick() {
 
         theJoyStickController.Disable();  // Unregister axis inputs

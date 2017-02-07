@@ -11,7 +11,7 @@ public class NetWorkLobbyHook : LobbyHook
     {
         //base.OnLobbyServerSceneLoadedForPlayer(manager, lobbyPlayer, gamePlayer);
         LobbyPlayer lobby = lobbyPlayer.GetComponent<LobbyPlayer>();
-        PlayerControllerScript localPlayer = gamePlayer.GetComponent<PlayerControllerScript>();
+        MultiplayerControlScript localPlayer = gamePlayer.GetComponent<MultiplayerControlScript>();
 
         localPlayer.pname = lobby.playerName;
         localPlayer.playerColor = lobby.playerColor;
