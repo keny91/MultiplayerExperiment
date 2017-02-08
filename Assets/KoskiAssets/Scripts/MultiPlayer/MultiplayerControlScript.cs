@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class MultiplayerControlScript : NetworkBehaviour
@@ -11,6 +12,9 @@ public class MultiplayerControlScript : NetworkBehaviour
     [SyncVar]
     public Color playerColor = Color.green;
     public Vector3 Rescaling = new Vector3(3, 3, 3);
+
+    Transform[] SpawnPoints = null;
+
 
 
     [Header("Player Attributes")]
@@ -45,8 +49,24 @@ public class MultiplayerControlScript : NetworkBehaviour
         */
     }
 
+   
+    public void PlayerRespawn()
+    {
+        if (SpawnPoints == null)
+            FindSpawnPoints();
+        System.Random rnd = new System.Random();
+        int randomNumber = rnd.Next(0, SpawnPoints.Length);
+
+        transform.position = SpawnPoints[randomNumber].position;
+
+    }
 
 
+    private void FindSpawnPoints()
+    {
+        SpawnPoints = GameObject.Find("RespawnPoints").transform.GetComponentsInChildren<Transform>();
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -55,6 +75,12 @@ public class MultiplayerControlScript : NetworkBehaviour
         if (!isLocalPlayer)
         {
             return;
+        }
+
+
+        if (CrossPlatformInputManager.GetButtonDown("Refresh")){
+
+            GetComponent<ARCheck>().OnRefreshPressed();
         }
 
 
@@ -119,6 +145,9 @@ void CmdFire()
         theTagReference.tagList = new Dictionary<string, int>();
         theTagReference.Initialize();
 
+        FindSpawnPoints();
+
+
         Renderer[] rend = GetComponentsInChildren<Renderer>();
         foreach (Renderer R in rend)
         {
@@ -137,8 +166,8 @@ void CmdFire()
         //transform.parent = GameObject.Find("Players").GetComponent<Transform>();
         //transform.localScale = Rescaling;
 
-
-        this.transform.position = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
+        PlayerRespawn();
+        //this.transform.position = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
 
 
 
@@ -151,6 +180,9 @@ void CmdFire()
 
     void OnTriggerEnter(Collider collision)
     {
+
+        if (!isLocalPlayer)
+            return;
 
         GameObject TheHitObject = collision.gameObject;
         int identifierTag;
@@ -194,7 +226,7 @@ void CmdFire()
             //Encountered Death object
             case 2:
                 Debug.Log("Hit Death", TheHitObject);
-                //PlayerRespawn();
+                PlayerRespawn();
                 //takeDamage();
                 break;
             //Encountered Vulnerable object

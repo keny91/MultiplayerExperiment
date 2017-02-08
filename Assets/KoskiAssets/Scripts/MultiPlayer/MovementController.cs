@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 
-public class MovementController : MonoBehaviour {
+public class MovementController : NetworkBehaviour {
 
     [Header("Movement Parameters")]
     public float MovementSpeed = 2f;
@@ -19,7 +20,9 @@ public class MovementController : MonoBehaviour {
     protected Vector3 Trayectory;
     protected Vector3 Position;
     protected Vector3 OPosition;
-    public GameObject PhysicalPlayer;
+
+  
+    public Transform PhysicalPlayer;
     protected Rigidbody thePhysics;
     protected float InpulseModificator;
 
@@ -104,11 +107,11 @@ public class MovementController : MonoBehaviour {
       
         Trayectory.y = 0; // keep the direction strictly horizontal
         Quaternion rot = Quaternion.LookRotation(Trayectory);
-        Debug.LogWarning("Original Rot: " + rot + "Target Rot:" + PhysicalPlayer.transform.rotation);
+        Debug.LogWarning("Original Rot: " + rot + "Target Rot:" + PhysicalPlayer.rotation);
         // slerp to the desired rotation over time
-        PhysicalPlayer.transform.rotation = Quaternion.Slerp(transform.rotation, rot, RotationSpeed * Time.deltaTime);
+        PhysicalPlayer.rotation = Quaternion.Slerp(transform.rotation, rot, RotationSpeed * Time.deltaTime);
         //PhysicalPlayer.transform.rotation = rot;
-        Quaternion n = PhysicalPlayer.transform.rotation;
+        Quaternion n = PhysicalPlayer.rotation;
         float differenceRotation = Quaternion.Angle(rot ,n);
         
 
@@ -122,7 +125,7 @@ public class MovementController : MonoBehaviour {
         thePhysics = this.GetComponent<Rigidbody>();
         try
         {
-            PhysicalPlayer = this.transform.FindChild("MeshContainer").gameObject;
+            PhysicalPlayer = this.transform.FindChild("MeshContainer").gameObject.transform;
         }
         catch(MissingReferenceException e)
         {

@@ -53,15 +53,17 @@ public class MovementControllerNonVelocity : MovementController {
     /// <summary>
     /// This child class method will rotate slightly the object towards the target direction.
     /// </summary>
+    /// 
+
     protected override void OrientObject()
     {
-        PhysicalPlayer.transform.LookAt(OPosition, transform.up);
+        PhysicalPlayer.LookAt(OPosition, transform.up);
 
         Trayectory.y = 0; // keep the direction strictly horizontal
         Quaternion rot = Quaternion.LookRotation(Trayectory);
         //Debug.LogWarning("Original Rot: " + rot + "Target Rot:" + PhysicalPlayer.transform.rotation);
         // slerp to the desired rotation over time
-        PhysicalPlayer.transform.rotation = Quaternion.Slerp(transform.rotation, rot, RotationSpeed * Time.deltaTime);
+        PhysicalPlayer.rotation = Quaternion.Slerp(transform.rotation, rot, RotationSpeed * Time.deltaTime);
         //PhysicalPlayer.transform.rotation = rot;
         //Quaternion n = PhysicalPlayer.transform.rotation;
         //float differenceRotation = Quaternion.Angle(rot, n);
