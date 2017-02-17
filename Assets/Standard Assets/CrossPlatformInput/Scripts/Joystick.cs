@@ -95,14 +95,14 @@ namespace UnityStandardAssets.CrossPlatformInput
 		}
 
 
-		public void OnPointerUp(PointerEventData data)
+		public virtual void OnPointerUp(PointerEventData data)
 		{
 			transform.position = m_StartPos;
 			UpdateVirtualAxes(m_StartPos);
 		}
 
 
-		public void OnPointerDown(PointerEventData data) { }
+		public virtual void OnPointerDown(PointerEventData data) { }
 
 		protected void OnDisable()
 		{

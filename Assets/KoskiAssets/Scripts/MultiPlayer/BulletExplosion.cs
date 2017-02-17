@@ -10,7 +10,7 @@ public class BulletExplosion : MonoBehaviour {
     public float m_MaxDamage = 100f;                    // The amount of damage done if the explosion is centred on a tank.
     public float m_ExplosionForce = 1000f;              // The amount of force added to a tank at the centre of the explosion.
     public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
-    public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
+    public float m_ExplosionRadius = 10f;                // The maximum distance away from the explosion tanks can be and are still affected.
 
 
     private void Start()
@@ -28,6 +28,7 @@ public class BulletExplosion : MonoBehaviour {
         // Go through all the colliders...
         for (int i = 0; i < colliders.Length; i++)
         {
+            Debug.LogWarning("Hit :" + colliders[i].transform.name);
             // ... and find their rigidbody.
             Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody>();
 
@@ -41,13 +42,18 @@ public class BulletExplosion : MonoBehaviour {
             // Find the TankHealth script associated with the rigidbody.
             HealthIndicator targetHealth = targetRigidbody.GetComponent<HealthIndicator>();
 
+
             // If there is no TankHealth script attached to the gameobject, go on to the next collider.
             if (!targetHealth)
+            {
+                
                 continue;
+            }
+                
 
             // Calculate the amount of damage the target should take based on it's distance from the shell.
             float damage = CalculateDamage(targetRigidbody.position);
-
+            Debug.LogWarning("Explosion impacted on: " + targetHealth.transform.name + " For DAMAGE: " + damage);
             // Deal this damage to the tank.
             targetHealth.TakeDamage(damage);
         }
@@ -59,6 +65,7 @@ public class BulletExplosion : MonoBehaviour {
         m_ExplosionParticles.Play();
 
         // Play the explosion sound effect.
+       // m_ExplosionAudio.clip("AudioExplosion");
         m_ExplosionAudio.Play();
 
         // Once the particles have finished, destroy the gameobject they are on.

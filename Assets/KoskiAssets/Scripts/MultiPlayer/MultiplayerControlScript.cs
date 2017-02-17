@@ -15,13 +15,16 @@ public class MultiplayerControlScript : NetworkBehaviour
 
     Transform[] SpawnPoints = null;
 
-
+    //JoyStickCustomController joyStickController; 
+    SmartARJoystick joyStickController;
+    public float JoystickManualCalibrationAngle = 0;
 
     [Header("Player Attributes")]
     public float movingSpeed = 3f;
     public TagDatabase theTagReference;
     public float rotateSpeed = 150.0f;
-
+    public bool Controllable = true;
+    
 
 
     //MovementController theMoveController;
@@ -95,10 +98,25 @@ public class MultiplayerControlScript : NetworkBehaviour
             z = 0;
         */
 
+        Vector3 MVector = new Vector3();
+        Vector3 targetVelocity = new Vector3();
+        if (Controllable)
+        {
+            MVector = joyStickController.getAxisOutput();
+            //Debug.LogWarning(MVector);
+        }
+        /*
         float x = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime * movingSpeed;
         float z = CrossPlatformInputManager.GetAxis("Vertical") * Time.deltaTime * movingSpeed;
+        */
 
-        Vector3 JoystickMovement = new Vector3(x, 0, z);
+        // Set horizontal velocity
+        targetVelocity.x += movingSpeed * MVector.y* Time.deltaTime;
+        targetVelocity.z += movingSpeed * MVector.x * Time.deltaTime;
+
+
+        Vector3 JoystickMovement = targetVelocity;
+
 
         theMoveController.Move(JoystickMovement);
 
@@ -140,6 +158,11 @@ void CmdFire()
         theHealth = (HealthIndicator)GetComponent<HealthIndicator>();
         //theMoveController = GetComponent<MovementController>();
         theMoveController = GetComponent<MovementControllerNonVelocity>();
+
+
+        GameObject joyObject = GameObject.Find("JoyStick");
+        joyStickController = (SmartARJoystick)joyObject.GetComponent<SmartARJoystick>();
+        joyStickController.configureJoystick(false, JoystickManualCalibrationAngle);
 
         theTagReference = new TagDatabase();
         theTagReference.tagList = new Dictionary<string, int>();
