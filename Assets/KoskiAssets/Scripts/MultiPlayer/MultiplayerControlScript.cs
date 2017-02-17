@@ -55,12 +55,17 @@ public class MultiplayerControlScript : NetworkBehaviour
    
     public void PlayerRespawn()
     {
-        if (SpawnPoints == null)
-            FindSpawnPoints();
-        System.Random rnd = new System.Random();
-        int randomNumber = rnd.Next(0, SpawnPoints.Length);
+        if (isLocalPlayer)
+        {
+            if (SpawnPoints == null)
+                FindSpawnPoints();
+            System.Random rnd = new System.Random();
+            int randomNumber = rnd.Next(0, SpawnPoints.Length);
 
-        transform.position = SpawnPoints[randomNumber].position;
+            transform.position = SpawnPoints[randomNumber].position;
+            GetComponent<Rigidbody>().velocity = new Vector3();
+        }
+
 
     }
 
