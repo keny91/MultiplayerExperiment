@@ -164,6 +164,8 @@ void CmdFire()
         //theMoveController = GetComponent<MovementController>();
         theMoveController = GetComponent<MovementControllerNonVelocity>();
 
+		Physics.gravity = new Vector3(0,-50f,0);
+
 
         GameObject joyObject = GameObject.Find("JoyStick");
         joyStickController = (SmartARJoystick)joyObject.GetComponent<SmartARJoystick>();
