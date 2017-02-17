@@ -12,7 +12,7 @@ public class PlayerShooting : NetworkBehaviour {
     public int m_PlayerNumber = 1;              // Used to identify the different players.
     public GameObject m_Shell;                   // Prefab of the shell.
     public Transform m_FireTransform;           // A child of the tank where the shells are spawned.
-    public Slider m_AimSlider;                  // A child of the tank that displays the current launch force.
+    //public Slider m_AimSlider;                  // A child of the tank that displays the current launch force.
     public AudioSource m_ShootingAudio;         // Reference to the audio source used to play the shooting audio. NB: different to the movement audio source.
     public AudioClip m_ChargingClip;            // Audio that plays when each shot is charging up.
     public AudioClip m_FireClip;                // Audio that plays when each shot is fired.
@@ -71,8 +71,8 @@ public class PlayerShooting : NetworkBehaviour {
         // Otherwise, if the fire button has just started being pressed...
         else if (CrossPlatformInputManager.GetButtonDown(m_FireButton))
         {
-            m_AimSlider.gameObject.SetActive(true);
-            m_AimSlider.value = m_MinLaunchForce;
+            //m_AimSlider.gameObject.SetActive(true);
+            //m_AimSlider.value = m_MinLaunchForce;
             // Debug.Log("SHOOT: PHASE 2.");
             // ... reset the fired flag and reset the launch force.
             m_Fired = false;
@@ -89,7 +89,7 @@ public class PlayerShooting : NetworkBehaviour {
             // Increment the launch force and update the slider.
             m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
 
-            m_AimSlider.value = m_CurrentLaunchForce;
+            //m_AimSlider.value = m_CurrentLaunchForce;
         }
         // Otherwise, if the fire button is released and the shell hasn't been launched yet...
         else if (!CrossPlatformInputManager.GetButtonDown(m_FireButton) && !m_Fired)
@@ -113,7 +113,7 @@ public class PlayerShooting : NetworkBehaviour {
     void CmdFire(float force)
     //private void Fire()
     {
-        m_AimSlider.gameObject.SetActive(false);
+        //m_AimSlider.gameObject.SetActive(false);
         // Set the fired flag so only Fire is only called once.
 
         //Debug.Log("SHOOT: SHOOTING");
