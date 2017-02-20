@@ -52,7 +52,9 @@ public class MultiplayerControlScript : NetworkBehaviour
         */
     }
 
-   
+   /// <summary>
+   /// Respawn the player given the preset set of points in the Scene
+   /// </summary>
     public void PlayerRespawn()
     {
         if (isLocalPlayer)
@@ -70,6 +72,9 @@ public class MultiplayerControlScript : NetworkBehaviour
     }
 
 
+    /// <summary>
+    /// Find and set as possible respawn the set of points in the respanw object.
+    /// </summary>
     private void FindSpawnPoints()
     {
         SpawnPoints = GameObject.Find("RespawnPoints").transform.GetComponentsInChildren<Transform>();
