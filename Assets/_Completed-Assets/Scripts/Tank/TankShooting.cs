@@ -90,7 +90,7 @@ namespace Complete
             // Create an instance of the shell and store a reference to it's rigidbody.
             Rigidbody shellInstance =
                 Instantiate (m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
-            shellInstance.transform.localScale = thePlayer.Rescaling;
+            //shellInstance.transform.localScale = thePlayer.Rescaling;
             // Set the shell's velocity to the launch force in the fire position's forward direction.
             shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward; 
 

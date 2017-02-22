@@ -5,26 +5,25 @@ using System.Collections;
 using System;
 using UnityStandardAssets.CrossPlatformInput;
 
+[RequireComponent(typeof(HealthIndicator))]
+
+
 public class MultiplayerControlScript : NetworkBehaviour
 {
     [SyncVar]
     public string pname = "thePlayer";
     [SyncVar]
     public Color playerColor = Color.green;
-    public Vector3 Rescaling = new Vector3(3, 3, 3);
+    
 
     Transform[] SpawnPoints = null;
+    public float InvulnerableTime = 2f;
 
     //JoyStickCustomController joyStickController; 
-    SmartARJoystick joyStickController;
-    public float JoystickManualCalibrationAngle = 0;
 
-    [Header("Player Attributes")]
-    public float movingSpeed = 3f;
+
+
     public TagDatabase theTagReference;
-    public float rotateSpeed = 150.0f;
-    public bool Controllable = true;
-    
 
 
     //MovementController theMoveController;
@@ -82,7 +81,7 @@ public class MultiplayerControlScript : NetworkBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+   public void Update()
     {
 
         if (!isLocalPlayer)
@@ -90,56 +89,14 @@ public class MultiplayerControlScript : NetworkBehaviour
             return;
         }
 
-
+        /*
         if (CrossPlatformInputManager.GetButtonDown("Refresh")){
 
             GetComponent<ARCheck>().OnRefreshPressed();
         }
-
-
-        /* float x = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime * rotateSpeed;
-        float z;
-        if (CrossPlatformInputManager.GetButton("Forward"))
-        {
-            z = Time.deltaTime * movingSpeed;
-
-        }
-                else
-            z = 0;
         */
 
-        Vector3 MVector = new Vector3();
-        Vector3 targetVelocity = new Vector3();
-        if (Controllable)
-        {
-            MVector = joyStickController.getAxisOutput();
-            //Debug.LogWarning(MVector);
-        }
-        /*
-        float x = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime * movingSpeed;
-        float z = CrossPlatformInputManager.GetAxis("Vertical") * Time.deltaTime * movingSpeed;
-        */
 
-        // Set horizontal velocity
-        targetVelocity.x += movingSpeed * MVector.y* Time.deltaTime;
-        targetVelocity.z += movingSpeed * MVector.x * Time.deltaTime;
-
-
-        Vector3 JoystickMovement = targetVelocity;
-
-
-        theMoveController.Move(JoystickMovement);
-
-
-        /*if (CrossPlatformInputManager.GetButtonDown("Fire") || Input.GetKeyDown(KeyCode.Space))
-        {
-            CmdFire();
-
-        }
-        */
-
-        // transform.Rotate(0, x, 0);
-        //transform.Translate(JoystickMovement);
 
 
     }
@@ -169,12 +126,11 @@ void CmdFire()
         //theMoveController = GetComponent<MovementController>();
         theMoveController = GetComponent<MovementControllerNonVelocity>();
 
-		Physics.gravity = new Vector3(0,-50f,0);
 
 
-        GameObject joyObject = GameObject.Find("JoyStick");
-        joyStickController = (SmartARJoystick)joyObject.GetComponent<SmartARJoystick>();
-        joyStickController.configureJoystick(false, JoystickManualCalibrationAngle);
+
+
+
 
         theTagReference = new TagDatabase();
         theTagReference.tagList = new Dictionary<string, int>();
@@ -203,9 +159,31 @@ void CmdFire()
 
         PlayerRespawn();
         //this.transform.position = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
+        isInvulnerable = true;
+        Invoke("ResetInvulnerability", InvulnerableTime);
+
+
+    }
 
 
 
+    public void TakeDamage(int dmg)
+    {
+        if (isLocalPlayer && !isInvulnerable)
+        {
+            isInvulnerable = true;
+            Invoke("ResetInvulnerability", InvulnerableTime);
+            theHealth.TakeDamage(dmg);
+        }
+        
+    }
+
+    /// <summary>
+    /// Set the player to vulnerable
+    /// </summary>
+    void ResetInvulnerability()
+    {
+        isInvulnerable = false;
     }
 
     /*
@@ -248,7 +226,7 @@ void CmdFire()
                 Debug.Log("Hit Damaging", TheHitObject);
                 if (!isInvulnerable)
                 {
-                    theHealth.TakeDamage(10);
+                    TakeDamage(10);
                     //theController.theSoundController.playClip(theController.theSoundController.SoundPlayerHit);
                     Vector3 colDir = collision.transform.position - gameObject.transform.FindChild("Origin").transform.position;
 
@@ -261,8 +239,9 @@ void CmdFire()
             //Encountered Death object
             case 2:
                 Debug.Log("Hit Death", TheHitObject);
+                //TakeDamage(theHealth.currentHealth);
                 PlayerRespawn();
-                //takeDamage();
+                
                 break;
             //Encountered Vulnerable object
             case 3:
@@ -302,7 +281,7 @@ void CmdFire()
 }
 
 
-
+/*
 
 /// <summary>
 /// Struct storing all samples of different colliding objects.
@@ -311,13 +290,8 @@ public struct TagDatabase
 {
     public Dictionary<string, int> tagList;
 
-    /*
-    public TagDatabase()
-    {
-        
-        Initialize();
-    }
-    */
+
+
 
     public void Initialize()
     {
@@ -330,3 +304,4 @@ public struct TagDatabase
         tagList.Add("Other", 0);
     }
 }
+*/
