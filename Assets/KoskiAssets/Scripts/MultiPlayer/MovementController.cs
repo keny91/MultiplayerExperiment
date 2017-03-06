@@ -12,18 +12,21 @@ public class MovementController : NetworkBehaviour {
 
     public float MaxSpeed = 100f;
     public float MaxRotationSpeed = 50f;
+    public Vector3 velocity = new Vector3();
+    public bool isControllable = true;
 
 
     [Header("Object Internal Attributes")]
     protected Vector3 Movement;
-    protected  Vector3 CurrentVelocity;
+    protected Vector3 CurrentVelocity;
     protected Vector3 Trayectory;
     protected Vector3 Position;
     protected Vector3 OPosition;
 
-  
+   // [Header("Object Internal Attributes")]
+
     public Transform PhysicalPlayer;
-    protected Rigidbody thePhysics;
+    protected Rigidbody thePhysicalObject;
     protected float InpulseModificator;
 
 
@@ -31,13 +34,13 @@ public class MovementController : NetworkBehaviour {
     /// Find out the physical velocity which the Rigidbody is moving.
     /// </summary>
     /// <returns>The estimated object velocity</returns>
-    protected Vector3 DetermineVelocity()
+    protected virtual Vector3 DetermineVelocity()
     {
 
         Vector3 targetVelocity = CurrentVelocity + Trayectory * MovementSpeed * Time.deltaTime;
 
         if (targetVelocity.magnitude > MaxSpeed)
-            targetVelocity = targetVelocity.normalized * MaxSpeed* InpulseModificator;
+            targetVelocity = targetVelocity.normalized * MaxSpeed * InpulseModificator;
 
 
         return targetVelocity;
@@ -62,10 +65,15 @@ public class MovementController : NetworkBehaviour {
             //Debug.LogWarning("The Current Trayectory: " + Trayectory + " ___ The velocity: " + CurrentVelocity);
 
             OrientObject();
-            thePhysics.velocity = CurrentVelocity;
+            thePhysicalObject.velocity = CurrentVelocity;
         }
 
     }
+
+
+
+
+
 
     /// <summary>
     /// Set the speed modificator depending on the modulus of the joystick.
@@ -83,7 +91,7 @@ public class MovementController : NetworkBehaviour {
     /// Required for trayectory and collision estimations.
     /// </summary>
     /// <param name="JoyStickTranslation"> The Joystick Axis input</param>
-    protected void EstimateFuturePosition(Vector3 JoyStickTranslation)
+    protected virtual void EstimateFuturePosition(Vector3 JoyStickTranslation)
     {
         Position = transform.position - JoyStickTranslation * 10;
     }
@@ -93,7 +101,7 @@ public class MovementController : NetworkBehaviour {
     /// <summary>
     /// Based on a future position get the vector estimating the trayectory.
     /// </summary>
-    protected void EstimateTrayectory()
+    protected virtual void EstimateTrayectory()
     {
         Trayectory = OPosition - Position; // Same as velocity?
     }
@@ -120,9 +128,11 @@ public class MovementController : NetworkBehaviour {
 
     // Use this for initialization
     void Start () {
+
+
         Movement = new Vector3();
         CurrentVelocity = new Vector3();
-        thePhysics = this.GetComponent<Rigidbody>();
+        thePhysicalObject = this.GetComponent<Rigidbody>();
         try
         {
             PhysicalPlayer = this.transform.FindChild("MeshContainer").gameObject.transform;
@@ -133,10 +143,22 @@ public class MovementController : NetworkBehaviour {
         }
         
     }
-	
-	// Update is called once per frame
-	public virtual void Update () {
+
+
+
+
+
+    // Update is called once per frame
+    public virtual void Update () {
         OPosition = this.transform.position;
-        CurrentVelocity = thePhysics.velocity;
-	}
+        velocity = thePhysicalObject.velocity;
+        Vector3 targetVelocity = new Vector3();
+
+
+
+
+
+        Move(velocity * Time.deltaTime);
+
+    }
 }

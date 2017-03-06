@@ -11,7 +11,7 @@ public class SpeedPowerup : PowerUpControl {
     /// <param name="theP"></param>
     public override void Effect(MultiplayerControlScript theP)
     {
-        theP.movingSpeed = theP.movingSpeed*1.5f;
+        theP.transform.GetComponent<MovementController>().MovementSpeed = theP.transform.GetComponent<MovementController>().MovementSpeed * 1.5f;
     }
         
 }
